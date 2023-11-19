@@ -102,6 +102,7 @@
     let totalAmount = 0;
     let discount = 0.15;
     let ongkos_kirim = 10.00;
+    let coupon = 0.10;
 
     async function fetchData(url) {
         try {
@@ -230,7 +231,18 @@
         totalElement.innerHTML = `<strong>Total + ongkos kirim: $${total.toFixed(2)}</strong>`;
         const cart = document.getElementById("cart");
         cart.appendChild(totalElement);
+
+        calculateAndDisplayWithCoupon(total);
     };
+
+    const calculateAndDisplayWithCoupon = (total) => {
+        const totalc = calculateTotalWithDiscount(total, coupon);
+
+        const totalElement = document.createElement("p");
+        totalElement.innerHTML = `<strong>Total setelah diskon coupon: $${totalc.toFixed(2)}</strong>`;
+        const cart = document.getElementById("cart");
+        cart.appendChild(totalElement);
+    }
 
     window.onload = renderProductList;
 </script>
