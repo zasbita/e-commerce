@@ -100,6 +100,7 @@
     var username = 'admin';
     var qty = 0;
     let totalAmount = 0;
+    let discount = 0.15;
 
     async function fetchData(url) {
         try {
@@ -205,11 +206,21 @@
         
         const cart = document.getElementById("cart");
         cart.appendChild(totalElement);
+        calculateAndDisplayTotal(totalAmount);
     }
 
-    // Render the product list when the page loads
+    calculateTotalWithDiscount = (totalAmount, discount) => totalAmount - (totalAmount * discount);
+
+    const calculateAndDisplayTotal = (totalAmount) => {
+        const discountedTotal = calculateTotalWithDiscount(totalAmount, discount);
+
+        const totalElement = document.createElement("p");
+        totalElement.innerHTML = `<strong>Total setelah diskon: $${discountedTotal.toFixed(2)}</strong>`;
+        const cart = document.getElementById("cart");
+        cart.appendChild(totalElement);
+    };
+
     window.onload = renderProductList;
-    document.getElementById("checkout-btn").addEventListener("click", checkout);
 </script>
 
 </body>
