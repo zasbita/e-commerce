@@ -126,10 +126,6 @@
             productList.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.classList.add('product-card');
-                
-                const image = document.createElement('img');
-                image.src = product.image;
-                image.alt = product.name;
 
                 const productName = document.createElement('h3');
                 productName.textContent = product.name;
