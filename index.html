@@ -72,6 +72,13 @@
             `;
             productList.appendChild(productElement);
         });
+
+        // Add to cart function
+        window.addToCart = function (productId, productName, productPrice) {
+            const cartItem = document.createElement("li");
+            cartItem.innerHTML = `${productName} - $${productPrice}`;
+            cartItems.appendChild(cartItem);
+        };
     });
 </script>
 
