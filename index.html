@@ -101,6 +101,7 @@
     var qty = 0;
     let totalAmount = 0;
     let discount = 0.15;
+    let ongkos_kirim = 10.00;
 
     async function fetchData(url) {
         try {
@@ -184,8 +185,8 @@
     function addToCart(productId, productName, productPrice) {
         const cartItems = document.getElementById("cart-items");
         const cartItem = document.createElement("li");
-        const itemPrice = parseFloat(productPrice); // Parse harga produk menjadi float
-        totalAmount += itemPrice; // Menambahkan harga produk ke totalAmount
+        const itemPrice = parseFloat(productPrice);
+        totalAmount += itemPrice;
         cartItem.innerHTML = `${productName} - $${productPrice}`;
         cartItems.appendChild(cartItem);
     }
@@ -195,7 +196,7 @@
         if (cartItems.children.length === 0) {
             alert("Your cart is empty. Add items before checking out.");
         } else {
-            calculateTotal(); // Hitung total sebelum checkout
+            calculateTotal();
             alert("Checkout successful! Thank you for shopping with us.");
         }
     }
@@ -209,13 +210,24 @@
         calculateAndDisplayTotal(totalAmount);
     }
 
-    calculateTotalWithDiscount = (totalAmount, discount) => totalAmount - (totalAmount * discount);
+    const calculateTotalWithDiscount = (totalAmount, discount) => totalAmount - (totalAmount * discount);
 
     const calculateAndDisplayTotal = (totalAmount) => {
         const discountedTotal = calculateTotalWithDiscount(totalAmount, discount);
 
         const totalElement = document.createElement("p");
         totalElement.innerHTML = `<strong>Total setelah diskon: $${discountedTotal.toFixed(2)}</strong>`;
+        const cart = document.getElementById("cart");
+        cart.appendChild(totalElement);
+
+        calculateAndDisplayWithOngkos(discountedTotal);
+    };
+
+    const calculateAndDisplayWithOngkos = (discountedTotal) => {
+        const total = discountedTotal + ongkos_kirim;
+
+        const totalElement = document.createElement("p");
+        totalElement.innerHTML = `<strong>Total + ongkos kirim: $${total.toFixed(2)}</strong>`;
         const cart = document.getElementById("cart");
         cart.appendChild(totalElement);
     };
