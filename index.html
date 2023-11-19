@@ -82,41 +82,53 @@
 
 <script>
     async function fetchData(url) {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch data. Status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error during data fetching:', error.message);
+        }
     }
 
     async function renderProductList() {
-        const productList = await fetchData('https://6554347063cafc694fe63a4b.mockapi.io/api/v1/products');
         const productListContainer = document.getElementById('product-list');
 
-        productList.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.classList.add('product-card');
-            
-            const image = document.createElement('img');
-            image.src = product.image;
-            image.alt = product.name;
+        try {
+            const productList = await fetchData('https://6554347063cafc694fe63a4b.mockapi.io/api/v1/products');
 
-            const productName = document.createElement('h3');
-            productName.textContent = product.name;
+            productList.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+                
+                const image = document.createElement('img');
+                image.src = product.image;
+                image.alt = product.name;
 
-            const detailsButton = document.createElement('button');
-            detailsButton.textContent = 'Details';
-            detailsButton.onclick = () => showDetails(product.id);
+                const productName = document.createElement('h3');
+                productName.textContent = product.name;
 
-            const addToCartButton = document.createElement('button');
-            addToCartButton.textContent = 'Add to Cart';
-            addToCartButton.onclick = () => addToCart(product.id, product.name, product.price);
+                const detailsButton = document.createElement('button');
+                detailsButton.textContent = 'Details';
+                detailsButton.onclick = () => showDetails(product.id);
 
-            productCard.appendChild(image);
-            productCard.appendChild(productName);
-            productCard.appendChild(detailsButton);
-            productCard.appendChild(addToCartButton);
-            
-            productListContainer.appendChild(productCard);
-        });
+                const addToCartButton = document.createElement('button');
+                addToCartButton.textContent = 'Add to Cart';
+                addToCartButton.onclick = () => addToCart(product.id, product.name, product.price);
+
+                productCard.appendChild(image);
+                productCard.appendChild(productName);
+                productCard.appendChild(detailsButton);
+                productCard.appendChild(addToCartButton);
+                
+                productListContainer.appendChild(productCard);
+            });
+        } catch (error) {
+            console.error('Error rendering product list:', error.message);
+        }
     }
 
     async function showDetails(productId) {
@@ -126,17 +138,21 @@
         const detailsContainer = document.getElementById('details');
         detailsContainer.innerHTML = '';
 
-        const details = await fetchData(`https://6554347063cafc694fe63a4b.mockapi.io/api/v1/details/${productId}`);
+        try {
+            const details = await fetchData(`https://6554347063cafc694fe63a4b.mockapi.io/api/v1/details/${productId}`);
 
-        const productName = document.createElement('h3');
-        productName.textContent = details.name;
+            const productName = document.createElement('h3');
+            productName.textContent = details.name;
 
-        const description = document.createElement('p');
-        description.textContent = details.description;
+            const description = document.createElement('p');
+            description.textContent = details.description;
 
-        detailsContainer.appendChild(productName);
-        detailsContainer.appendChild(description);
-        detailsContainer.appendChild(addToCartButton);
+            detailsContainer.appendChild(productName);
+            detailsContainer.appendChild(description);
+            detailsContainer.appendChild(addToCartButton);
+        } catch (error) {
+            console.error('Error fetching details:', error.message);
+        }
     }
 
     function closeModal() {
