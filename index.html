@@ -97,6 +97,10 @@
 <div id="cart"></div>
 
 <script>
+    var username = 'admin';
+    var qty = 0;
+    let totalAmount = 0;
+
     async function fetchData(url) {
         try {
             const response = await fetch(url);
@@ -176,9 +180,11 @@
         detailsModal.style.display = 'none';
     }
 
-    function addToCart (productId, productName, productPrice) {
+    function addToCart(productId, productName, productPrice) {
         const cartItems = document.getElementById("cart-items");
         const cartItem = document.createElement("li");
+        const itemPrice = parseFloat(productPrice); // Parse harga produk menjadi float
+        totalAmount += itemPrice; // Menambahkan harga produk ke totalAmount
         cartItem.innerHTML = `${productName} - $${productPrice}`;
         cartItems.appendChild(cartItem);
     }
@@ -188,12 +194,22 @@
         if (cartItems.children.length === 0) {
             alert("Your cart is empty. Add items before checking out.");
         } else {
+            calculateTotal(); // Hitung total sebelum checkout
             alert("Checkout successful! Thank you for shopping with us.");
         }
     }
 
+    function calculateTotal() {
+        const totalElement = document.createElement("p");
+        totalElement.innerHTML = `<strong>Total: $${totalAmount.toFixed(2)}</strong>`;
+        
+        const cart = document.getElementById("cart");
+        cart.appendChild(totalElement);
+    }
+
     // Render the product list when the page loads
     window.onload = renderProductList;
+    document.getElementById("checkout-btn").addEventListener("click", checkout);
 </script>
 
 </body>
