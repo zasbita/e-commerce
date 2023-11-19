@@ -65,6 +65,14 @@
 
 <div id="product-list"></div>
 
+<div id="details-modal">
+    <div class="modal-content">
+      <h2>Product Details</h2>
+      <div id="details"></div>
+      <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
 <script>
   async function fetchData(url) {
     const response = await fetch(url);
@@ -87,12 +95,48 @@
       const productName = document.createElement('h3');
       productName.textContent = product.name;
 
+      const detailsButton = document.createElement('button');
+      detailsButton.textContent = 'Details';
+      detailsButton.onclick = () => showDetails(product.id);
+
       productCard.appendChild(image);
       productCard.appendChild(productName);
+      productCard.appendChild(detailsButton);
       
       productListContainer.appendChild(productCard);
     });
   }
+
+  
+  async function showDetails(productId) {
+    const detailsModal = document.getElementById('details-modal');
+    detailsModal.style.display = 'flex';
+
+    const detailsContainer = document.getElementById('details');
+    detailsContainer.innerHTML = '';
+
+    const details = await fetchData(`https://6554347063cafc694fe63a4b.mockapi.io/api/v1/details/${productId}`);
+
+    const productName = document.createElement('h3');
+    productName.textContent = details.name;
+
+    const description = document.createElement('p');
+    description.textContent = details.description;
+
+    const addToCartButton = document.createElement('button');
+    addToCartButton.textContent = 'Add to Cart';
+    addToCartButton.onclick = () => addToCart(details);
+
+    detailsContainer.appendChild(productName);
+    detailsContainer.appendChild(description);
+    detailsContainer.appendChild(addToCartButton);
+  }
+
+  function closeModal() {
+    const detailsModal = document.getElementById('details-modal');
+    detailsModal.style.display = 'none';
+  }
+
   // Render the product list when the page loads
   window.onload = renderProductList;
 </script>
