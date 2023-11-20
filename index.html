@@ -99,10 +99,10 @@
 <script>
     var username = 'admin';
     var qty = 0;
-    let totalAmount = 0;
-    let discount = 0.15;
-    let ongkos_kirim = 10.00;
-    let coupon = 0.10;
+    var totalAmount = 0;
+    var discount = 0.15;
+    var ongkos_kirim = 10.00;
+    var coupon = 0.10;
 
     async function fetchData(url) {
         try {
@@ -138,7 +138,6 @@
                 addToCartButton.textContent = 'Add to Cart';
                 addToCartButton.onclick = () => addToCart(product.id, product.name, product.price);
 
-                productCard.appendChild(image);
                 productCard.appendChild(productName);
                 productCard.appendChild(detailsButton);
                 productCard.appendChild(addToCartButton);
